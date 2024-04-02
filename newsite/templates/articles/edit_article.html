@@ -1,0 +1,18 @@
+{% extends "../base.html" %}
+{% block head %}
+    {% load crispy_forms_tags %}
+{% endblock head %}
+{% block body %}
+    {% if user.is_authenticated and user == article.author %}    
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form|crispy}}
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+    {% else %}
+        <h3>----------------------------------------------</h3>
+        <h2>you have not loged in yet as the author so you can't edit</h2>
+        <h2><a href="{% url 'login' %}">Login</a></h2>
+        <h3>----------------------------------------------</h3>
+    {% endif %}
+{% endblock body %}

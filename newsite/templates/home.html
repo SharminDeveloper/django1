@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>home page</h1>
+{% if user.is_authenticated %}
+<h2>{{user}}</h2>
+<h2><a href="{% url 'logout' %}">logout</a></h2>
+{% if user.username == 'admin' %}
+<h2><a href="{% url 'admin:index' %}">admin page</a></h2>
+{% endif %}
+<h2><a href="{% url 'all_articles' %}">Articles</a></h2>
+{% else %}
+<h2><a href="{% url 'login' %}">login</a></h2>
+{% endif %}
+{% endblock body %}

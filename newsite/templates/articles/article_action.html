@@ -1,0 +1,32 @@
+{% extends "../base.html" %}
+{% block head %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/articles/create_article.css' %}">
+{% endblock head %}
+{% block body %}
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="tags" value="{{list_tags}}">
+    <label for="{{form.title.id_for_label}}">title</label>
+    <br>
+    {{form.title|add_class:'yellow'}}
+    <br>
+    <label for="{{form.article.id_for_label}}">article</label>
+    <br>
+    {{form.article|add_class:'green'}}
+    <br>
+    <label for="{{form.tag.id_for_label}}">tags</label>
+    <br>
+    {{form.tag|add_class:'blue'}}
+    <button type="submit" class="btn btn-success" name="status" value="add">add</button>
+    <br>
+    {% if len_tags != 0 %}
+    {% for tag in list_tags %}
+    <h4>{{tag}} <button type="submit" class="btn btn-danger" name="delete" value="{{tag}}">x</button> </h4>
+    {% endfor %}
+    {% endif %}
+    <button type="submit" class="btn btn-primary" name="status" value="done">submit</button>
+</form>
+{% endblock body %}

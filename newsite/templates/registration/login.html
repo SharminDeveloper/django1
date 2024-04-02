@@ -1,0 +1,27 @@
+{% extends '../base.html' %}
+{% block head %}
+{% load crispy_forms_tags %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/registration/login.css' %}">
+{% endblock head %}
+{% block body %}
+<form action="" method="post">
+	{% csrf_token %}
+	<label for="{{form.username.id_for_label}}">username</label>
+	<br>
+	{{form.username}}
+	<br>
+	{{form.username.errors}}
+	<br>
+	<label for="{{form.password.id_for_label}}">password</label>
+	<br>
+	{{form.password}}
+	<br>
+	{{form.password.errors}}
+	<br>
+	<button type="submit" class="btn btn-primary">Login</button>
+</form>
+<a href="{% url 'forgot_my_password' %}">did you forget your password</a>
+<br>
+<a href="{% url 'signup' %}">signup</a>
+{% endblock body %}

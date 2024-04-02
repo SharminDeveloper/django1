@@ -1,0 +1,70 @@
+{% extends "../base.html" %}
+{% block head %}
+{% load crispy_forms_tags %}
+{% endblock head %}
+{% block body %}
+<h1>{{article.title}}</h1>
+<h3>by {{article.author}}</h3>
+<hr>
+<h3>
+    <article>{{article.article}}</article>
+</h3>
+{% if tags_len != 0 %}
+<h3>tags:</h3>
+<h5>
+    {% for tag in article.tags.all %}
+    < {{tag}}>
+        {% endfor %}
+</h5>
+{% endif %}
+<h4><a href="{% url 'all_articles' %}">all articles</a></h4>
+<hr>
+<h2>Comments</h2>
+{% if user.is_authenticated %}
+<form action="" method="post">
+    {% csrf_token %}
+    {% if comment_status == 'edit' %}
+    <h4>{{form|crispy}}</h4>
+    <button type="submit" class="btn btn-primary">Edit Comment</button>
+    {% elif comment_status == 'delete'%}
+    <h4>you're comment:</h4>
+    <h4>&nbsp;&nbsp;&nbsp;&nbsp;{{form.user_commment}}</h4>
+    <button type="submit" class="btn btn-danger">are you sure that you want to delete comment</button>
+    <a href="{% url 'article' article.id %}"><button type="button" class="btn btn-success">No</button></a>
+    {% else %}
+    <h4>{{form|crispy}}</h4>
+    <button type="submit" class="btn btn-primary">Comment</button>
+    {% endif %}
+</form>
+{% else %}
+<h3>----------------------------------------------</h3>
+<h2>you have not loged in yet so you can't comment</h2>
+<h2><a href="{% url 'login' %}">Login</a></h2>
+<h3>----------------------------------------------</h3>
+{% endif %}
+<br>
+{% for TheComment in user_is_writer %}
+<h4>{{TheComment.writer}}: <p>{{TheComment.user_commment}}</p>
+</h4>
+<br>
+<h4>
+    <a href="{% url 'article' article.id %}?comment_status=edit&comment_pk={{TheComment.id}}"><button
+            class="btn btn-primary">Edit</button></a>
+    &nbsp;
+    |
+    &nbsp;
+    <a href="{% url 'article' article.id %}?comment_status=delete&comment_pk={{TheComment.id}}"><button
+            class="btn btn-danger">Delete</button></a>
+</h4>
+<br>
+<h3>----------------------------------------------</h3>
+<br>
+{% endfor %}
+{% for TheComment in user_is_not_writer %}
+<h4>{{TheComment.writer}}: <p>{{TheComment.user_commment}}</p>
+</h4>
+<br>
+<h3>----------------------------------------------</h3>
+<br>
+{% endfor %}
+{% endblock body %}

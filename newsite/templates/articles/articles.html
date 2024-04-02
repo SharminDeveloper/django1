@@ -1,0 +1,29 @@
+{% extends "../base.html" %}
+{% block head %}
+{% load crispy_forms_tags %}
+{% endblock head %}
+{% block body %}
+<h3><a href="{% url 'create_article' %}">create your own article</a></h3>
+<h3><a href="{% url 'home' %}">Home</a></h3>
+<hr>
+<form action="" method="get">
+    <h3><label for="search">search article:</label></h3>
+    {% if resault == "" %}
+    <input id="search" type="search" name="search" placeholder="Searching...">
+    {% else %}
+    <input id="search" type="search" name="search" value="{{resault}}" placeholder="Searching...">
+    {% endif %}
+    <button type=" submit" class="btn btn-primary">search</button>
+</form>
+<h1>All articles:</h1>
+<h2>{{resault_found}} found</h2>
+{% for article in articles %}
+<h3><a href="{% url 'article' article.id %}">{{article.title}}</a></h3>
+<br>
+<h4>by {{article.author}}</h4>
+<br>
+{% if article.author == user %}<h4><a href="{% url 'edit_article' article.id %}">Edit</a> | <a
+        href="{% url 'delete_article' article.id %}">Delete</a></h4><br>{% endif %}
+<h3>----------------------------------------------</h3>
+{% endfor %}
+{% endblock body %}
